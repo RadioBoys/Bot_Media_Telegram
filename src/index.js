@@ -70,17 +70,9 @@ async function processDownload(chatId, text, messageId) {
             url = text.trim();
         }
 
-        // Thông báo nhận diện link
-        await sendTemporaryMessage(chatId, `🔍 *Nhận diện:* Đang xử lý link gửi đi...`, messageId);
-
-        // Bật trạng thái hiển thị "Bot đang gửi video..." trên Telegram
-        await bot.sendChatAction(chatId, 'upload_video');
-
         // 1. XỬ LÝ LINK FACEBOOK (SỬ DỤNG YT-DLP + COOKIES BYPASS)
         if (isFacebook) {
             try {
-                await sendTemporaryMessage(chatId, `🚀 *API:* Đang trích xuất video Facebook...`, messageId);
-
                 // Gọi API thay cho yt-dlp
                 const response = await axios.post('https://gendownload.com/api/extract',
                     { url: url },
@@ -94,7 +86,6 @@ async function processDownload(chatId, text, messageId) {
                 );
 
                 const data = response.data;
-                console.log(`[DEBUG] Dữ liệu trả về từ API:`, data);
 
                 if (data && data.formats) {
                     // Logic ưu tiên: HD, nếu không có thì lấy SD
@@ -110,8 +101,6 @@ async function processDownload(chatId, text, messageId) {
                             url: videoData.url,
                             responseType: 'stream'
                         });
-
-                        await sendTemporaryMessage(chatId, `📤 *Telegram:* Đang đẩy video lên nhóm...`, messageId);
 
                         const videoTitle = data.title || 'Facebook Video';
                         await bot.sendVideo(chatId, fileStream.data, {
