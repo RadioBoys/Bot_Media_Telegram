@@ -3,12 +3,16 @@ import axios from 'axios';
 import { exec } from 'child_process';
 import util from 'util';
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const execPromise = util.promisify(exec);
 
 // THAY TOKEN BOT CỦA ÔNG VÀO ĐÂY
-const TELEGRAM_TOKEN = '8745075605:AAFZ112IDGsibpn9EvZoxPYntaNm2YVGi9M';
-const RAPID_API_KEY = '64cbecfe19msh8cebd3651c754c2p1f55b3jsn826d2ef4b77c';
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
+const RAPID_API_KEY = process.env.RAPID_API_KEY;
+
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
