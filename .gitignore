@@ -1,0 +1,5 @@
+node_modules
+.env
+facebook_cookies.txt
+test.js
+cookies.txt
